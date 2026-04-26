@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:konversi_suhu/main.dart';
 
 void main() {
-  // ── Unit Test: Model Konversi ──────────────────────────────
   group('KonversiModel', () {
     test('Celsius ke Fahrenheit', () {
       expect(KonversiModel.konversi(0, Suhu.celsius, Suhu.fahrenheit), 32.0);
@@ -45,7 +43,60 @@ void main() {
     });
   });
 
-  // ── Widget Test: UI ────────────────────────────────────────
+  group('KonversiProvider', () {
+    test('Status awal adalah initial', () {
+      final prov = KonversiProvider();
+      expect(prov.status, KonversiStatus.initial);
+      expect(prov.hasil, isNull);
+    });
+
+    test('konversi() input kosong menghasilkan error', () {
+      final prov = KonversiProvider();
+      final err = prov.konversi('');
+      expect(err, isNotNull);
+      expect(prov.status, KonversiStatus.error);
+    });
+
+    test('konversi() nilai valid menghasilkan sukses', () {
+      final prov = KonversiProvider();
+      final err = prov.konversi('100');
+      expect(err, isNull);
+      expect(prov.status, KonversiStatus.success);
+      expect(prov.hasil, 212.0);
+    });
+
+    test('konversi() Kelvin negatif menghasilkan error', () {
+      final prov = KonversiProvider();
+      prov.setDari(Suhu.kelvin);
+      final err = prov.konversi('-10');
+      expect(err, isNotNull);
+      expect(prov.status, KonversiStatus.error);
+    });
+
+    test('tukar() menukar dari dan ke', () {
+      final prov = KonversiProvider();
+      prov.tukar();
+      expect(prov.dari, Suhu.fahrenheit);
+      expect(prov.ke, Suhu.celsius);
+    });
+
+    test('reset() membersihkan semua state', () {
+      final prov = KonversiProvider();
+      prov.konversi('100');
+      prov.reset();
+      expect(prov.hasil, isNull);
+      expect(prov.status, KonversiStatus.initial);
+    });
+
+    test('toggleShowSemua() membalik state', () {
+      final prov = KonversiProvider();
+      prov.toggleShowSemua();
+      expect(prov.showSemua, isTrue);
+      prov.toggleShowSemua();
+      expect(prov.showSemua, isFalse);
+    });
+  });
+
   group('HomeScreen UI', () {
     testWidgets('Menampilkan judul AppBar', (WidgetTester tester) async {
       await tester.pumpWidget(const KonversiSuhuApp());
@@ -73,24 +124,17 @@ void main() {
     testWidgets('Konversi 100°C menampilkan 212°F',
         (WidgetTester tester) async {
       await tester.pumpWidget(const KonversiSuhuApp());
-
-      // Masukkan nilai
       await tester.enterText(find.byType(TextField), '100');
-
-      // Pastikan dropdown "Dari" = Celsius, "Ke" = Fahrenheit (default)
       await tester.tap(find.text('KONVERSI'));
       await tester.pumpAndSettle();
-
       expect(find.textContaining('212'), findsWidgets);
     });
 
     testWidgets('Tombol reset membersihkan input', (WidgetTester tester) async {
       await tester.pumpWidget(const KonversiSuhuApp());
-
       await tester.enterText(find.byType(TextField), '100');
       await tester.tap(find.byIcon(Icons.refresh));
       await tester.pump();
-
       final tf = tester.widget<TextField>(find.byType(TextField));
       expect(tf.controller?.text, '');
     });
