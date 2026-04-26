@@ -41,26 +41,39 @@ class KartuInput extends StatelessWidget {
                 decimal: true,
                 signed: true,
               ),
+              maxLines: 1,
               decoration: InputDecoration(
-                labelText: 'Nilai Suhu',
+                labelText: 'Nilai',
                 hintText: 'Contoh: 100',
                 prefixIcon: const Icon(Icons.thermostat),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 filled: true,
+                isDense: true,
               ),
               onSubmitted: (_) => onKonversi(),
             ),
             const SizedBox(height: 16),
+
+            // ── Dropdown Dari (full width) ─────────────────────
+            _SuhuDropdown(
+              label: 'Dari',
+              nilai: prov.dari,
+              onChanged: (v) =>
+                  context.read<KonversiProvider>().setDari(v!),
+            ),
+            const SizedBox(height: 8),
+
+            // ── Tombol Tukar + Dropdown Ke ────────────────────
             Row(
               children: [
                 Expanded(
                   child: _SuhuDropdown(
-                    label: 'Dari',
-                    nilai: prov.dari,
+                    label: 'Ke',
+                    nilai: prov.ke,
                     onChanged: (v) =>
-                        context.read<KonversiProvider>().setDari(v!),
+                        context.read<KonversiProvider>().setKe(v!),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -69,20 +82,11 @@ class KartuInput extends StatelessWidget {
                     inputCtrl.clear();
                     context.read<KonversiProvider>().tukar();
                   },
-                  icon: const Icon(Icons.swap_horiz),
+                  icon: const Icon(Icons.swap_vert),
                   tooltip: 'Tukar',
                   style: IconButton.styleFrom(
                     backgroundColor: cs.primaryContainer,
                     foregroundColor: cs.onPrimaryContainer,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _SuhuDropdown(
-                    label: 'Ke',
-                    nilai: prov.ke,
-                    onChanged: (v) =>
-                        context.read<KonversiProvider>().setKe(v!),
                   ),
                 ),
               ],
@@ -108,7 +112,8 @@ class _SuhuDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<Suhu>(
-      initialValue: nilai,        // ← BERUBAH: value → initialValue
+      initialValue: nilai,
+      isExpanded: true,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -118,8 +123,11 @@ class _SuhuDropdown extends StatelessWidget {
       items: Suhu.values
           .map((s) => DropdownMenuItem(
                 value: s,
-                child: Text('${s.nama} (${s.simbol})',
-                    style: const TextStyle(fontSize: 13)),
+                child: Text(
+                  '${s.nama} (${s.simbol})',
+                  style: const TextStyle(fontSize: 13),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ))
           .toList(),
       onChanged: onChanged,
