@@ -63,33 +63,29 @@ class KartuInput extends StatelessWidget {
               onChanged: (v) =>
                   context.read<KonversiProvider>().setDari(v!),
             ),
-            const SizedBox(height: 8),
 
-            // ── Tombol Tukar + Dropdown Ke ────────────────────
-            Row(
-              children: [
-                Expanded(
-                  child: _SuhuDropdown(
-                    label: 'Ke',
-                    nilai: prov.ke,
-                    onChanged: (v) =>
-                        context.read<KonversiProvider>().setKe(v!),
-                  ),
+            // ── Tombol Tukar (tengah) ─────────────────────────
+            Center(
+              child: IconButton.filled(
+                onPressed: () {
+                  inputCtrl.clear();
+                  context.read<KonversiProvider>().tukar();
+                },
+                icon: const Icon(Icons.swap_vert),
+                tooltip: 'Tukar',
+                style: IconButton.styleFrom(
+                  backgroundColor: cs.primaryContainer,
+                  foregroundColor: cs.onPrimaryContainer,
                 ),
-                const SizedBox(width: 8),
-                IconButton.filled(
-                  onPressed: () {
-                    inputCtrl.clear();
-                    context.read<KonversiProvider>().tukar();
-                  },
-                  icon: const Icon(Icons.swap_vert),
-                  tooltip: 'Tukar',
-                  style: IconButton.styleFrom(
-                    backgroundColor: cs.primaryContainer,
-                    foregroundColor: cs.onPrimaryContainer,
-                  ),
-                ),
-              ],
+              ),
+            ),
+
+            // ── Dropdown Ke (full width) ──────────────────────
+            _SuhuDropdown(
+              label: 'Ke',
+              nilai: prov.ke,
+              onChanged: (v) =>
+                  context.read<KonversiProvider>().setKe(v!),
             ),
           ],
         ),
