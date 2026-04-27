@@ -2,7 +2,7 @@
 Nama: Widya Ratna Hertanti,
 NRP: 3124521037
 ## Hasil Refactor
-<img width="523" height="852" alt="Image" src="https://github.com/user-attachments/assets/703e1d5a-c363-46ec-8134-c8de6b5ca3a9" />
+<img width="510" height="836" alt="Image" src="https://github.com/user-attachments/assets/940ec46c-80d3-4aab-9102-2d7a25e8c4d3" />
 <img width="447" height="831" alt="Image" src="https://github.com/user-attachments/assets/774500af-7fac-4682-9e44-3e5ee9cbc8ca" />
 <img width="478" height="842" alt="Image" src="https://github.com/user-attachments/assets/fe3c9476-28cf-4ec1-a043-d5ce29109438" />
 
