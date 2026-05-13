@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../provider/konversi_provider.dart';
 import '../widget/suhu_widgets.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -51,13 +53,22 @@ class _HomeScreenState extends State<HomeScreen>
     FocusScope.of(context).unfocus();
   }
 
+  Future<void> _logout() async {
+    await FirebaseAuth.instance.signOut();
+    if (!mounted) return;
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (route) => false,
+    );
+  }
+
   void _showSnackbar(String pesan) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(pesan),
         behavior: SnackBarBehavior.floating,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -96,6 +107,11 @@ class _HomeScreenState extends State<HomeScreen>
             icon: const Icon(Icons.refresh),
             tooltip: 'Reset',
             onPressed: _reset,
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: _logout,
           ),
         ],
       ),
