@@ -1,5 +1,6 @@
 # Hasil AuthService Menggunakan Firebase (Run Android Studio)
 <img width="448" height="971" alt="Image" src="https://github.com/user-attachments/assets/83dfdae9-e41f-44f4-8e1f-22bc4a842b41" />
+<img width="463" height="994" alt="Image" src="https://github.com/user-attachments/assets/9069f86c-c962-48fc-811c-117abebf35bb" />
 # konversi_suhu
 Nama: Widya Ratna Hertanti,
 NRP: 3124521037
